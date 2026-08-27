@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard — Jadara Clearance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="student-dashboard.html" class="navbar-brand">
+            🎓 Jadara Clearance System
+        </a>
+        <div class="navbar-user">
+            <div class="user-info">
+                <div id="userName" class="user-name">Loading...</div>
+                <div class="user-role">Student Portal</div>
+            </div>
+            <button id="logoutBtn" class="btn btn-outline btn-sm">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+                <h1 style="font-size: 1.5rem; font-weight: 700;">My Clearance Progress</h1>
+                <p style="color: var(--color-text-muted); font-size: 0.9rem;">Track your clearance requests across university departments</p>
+            </div>
+            <button id="refreshBtn" class="btn btn-outline btn-sm">
+                🔄 Refresh Status
+            </button>
+        </div>
+
+        <div id="dashboardContent">
+            <div class="card" style="text-align: center; padding: 2rem;">
+                <div class="spinner" style="margin: 0 auto 1rem; width: 2rem; height: 2rem; border-width: 3rem; border-top-color: var(--color-primary);"></div>
+                <p style="color: var(--color-text-muted);">Fetching clearance request details...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/student.js"></script>
+</body>
+</html>

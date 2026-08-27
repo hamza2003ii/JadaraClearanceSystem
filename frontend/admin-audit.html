@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Logs — Jadara Clearance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="admin-audit.html" class="navbar-brand">
+            🛡️ Jadara Clearance System
+        </a>
+        <div class="navbar-user">
+            <div class="user-info">
+                <div id="userName" class="user-name">Loading...</div>
+                <div class="user-role">System Administrator</div>
+            </div>
+            <button id="logoutBtn" class="btn btn-outline btn-sm">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <h1 style="font-size: 1.5rem; font-weight: 700;">System Audit Logs</h1>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Track all system actions, approvals, and clearance events</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <form id="filterForm" class="filter-bar">
+            <div class="filter-group">
+                <label for="requestIdFilter">Request ID</label>
+                <input type="number" id="requestIdFilter" class="form-control" placeholder="e.g. 101">
+            </div>
+
+            <div class="filter-group">
+                <label for="userIdFilter">User ID</label>
+                <input type="number" id="userIdFilter" class="form-control" placeholder="e.g. 5">
+            </div>
+
+            <div class="filter-group">
+                <label for="fromDateFilter">From Date</label>
+                <input type="date" id="fromDateFilter" class="form-control">
+            </div>
+
+            <div class="filter-group">
+                <label for="toDateFilter">To Date</label>
+                <input type="date" id="toDateFilter" class="form-control">
+            </div>
+
+            <div style="display: flex; gap: 0.5rem;">
+                <button type="submit" class="btn btn-primary btn-sm">Apply Filters</button>
+                <button type="button" id="resetFiltersBtn" class="btn btn-outline btn-sm">Reset</button>
+            </div>
+        </form>
+
+        <!-- Audit Table -->
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Action Type</th>
+                            <th>Description</th>
+                            <th>Acted By User</th>
+                            <th>Request ID</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="emptyState" style="display: none; text-align: center; padding: 3rem 1rem;">
+                <h3 style="color: var(--color-text-muted); font-size: 1.1rem; font-weight: 500;">No Audit Logs Found</h3>
+                <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Try adjusting your search criteria or resetting filters.</p>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <div id="pageIndicator" class="pagination-info">Page 1</div>
+                <div class="pagination-controls">
+                    <button id="prevPageBtn" class="btn btn-outline btn-sm" disabled>Previous</button>
+                    <button id="nextPageBtn" class="btn btn-outline btn-sm">Next</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

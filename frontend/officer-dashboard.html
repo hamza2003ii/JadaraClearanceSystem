@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Officer Dashboard — Jadara Clearance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="officer-dashboard.html" class="navbar-brand">
+            🏛️ Jadara Clearance System
+        </a>
+        <div class="navbar-user">
+            <div class="user-info">
+                <div id="userName" class="user-name">Loading...</div>
+                <div id="userRole" class="user-role">Department Officer</div>
+            </div>
+            <button id="logoutBtn" class="btn btn-outline btn-sm">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+                <h1 style="font-size: 1.5rem; font-weight: 700;">Department Pending Requests</h1>
+                <p style="color: var(--color-text-muted); font-size: 0.9rem;">Review and process student clearance approvals</p>
+            </div>
+            <button id="refreshBtn" class="btn btn-outline btn-sm">
+                🔄 Refresh Pending List
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>University ID</th>
+                            <th>Reference</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="emptyState" style="display: none; text-align: center; padding: 3rem 1rem;">
+                <h3 style="color: var(--color-text-muted); font-size: 1.1rem; font-weight: 500;">No Pending Clearance Approvals</h3>
+                <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: 0.25rem;">All student requests for your department have been processed.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Review Student Request</h3>
+                <button id="modalCloseBtn" class="modal-close">&times;</button>
+            </div>
+
+            <div id="modalAlert" class="alert alert-danger"></div>
+
+            <div style="margin-bottom: 1.25rem; background: var(--color-bg); padding: 0.75rem 1rem; border-radius: var(--radius-sm);">
+                <div style="font-size: 0.85rem; color: var(--color-text-muted);">Student Details</div>
+                <div id="modalStudentName" style="font-weight: 700; font-size: 1rem; color: var(--color-primary);"></div>
+                <div style="font-size: 0.85rem; color: var(--color-text-muted);">
+                    University ID: <span id="modalUniversityId" style="font-weight: 600; color: var(--color-text-main);"></span>
+                </div>
+            </div>
+
+            <form id="reviewForm">
+                <div class="form-group">
+                    <label for="statusSelect">Decision</label>
+                    <select id="statusSelect" class="form-control">
+                        <option value="Approved">Approve Clearance</option>
+                        <option value="Rejected">Reject Clearance</option>
+                    </select>
+                </div>
+
+                <div id="rejectionReasonGroup" class="form-group" style="display: none;">
+                    <label for="rejectionReason">Rejection Reason <span style="color: var(--color-danger);">*</span></label>
+                    <textarea id="rejectionReason" class="form-control" rows="3" placeholder="Explain why the clearance request was rejected..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="fineAmount">Fine / Fee Amount ($) <small style="color: var(--color-text-muted);">(Optional)</small></label>
+                    <input type="number" id="fineAmount" class="form-control" min="0" step="0.01" placeholder="0.00">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="modalCancelBtn" class="btn btn-outline">Cancel</button>
+                    <button type="submit" id="modalSubmitBtn" class="btn btn-primary">Submit Decision</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/officer.js"></script>
+</body>
+</html>

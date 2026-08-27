@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Jadara Clearance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Jadara Clearance</h1>
+                <p>Sign in to your account</p>
+            </div>
+
+            <div id="loginAlert" class="alert alert-danger"></div>
+
+            <form id="loginForm" action="javascript:void(0);" onsubmit="return false;" novalidate>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="user@jadara.edu" required>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                    <div class="invalid-feedback">Password is required.</div>
+                </div>
+
+                <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-block">
+                    Sign In
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                <span style="color: var(--color-text-muted);">New student?</span>
+                <a href="register.html" style="color: var(--color-primary); font-weight: 600; text-decoration: none; margin-left: 0.25rem;">
+                    Register here
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
