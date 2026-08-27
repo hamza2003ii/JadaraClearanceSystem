@@ -175,6 +175,41 @@ app.UseSwaggerUI(c =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+// Initialize Database and Seed Default Roles/Departments
+using (var scope = app.Services.CreateScope())
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<JadaraClearanceDbContext>();
+        context.Database.EnsureCreated();
+
+        if (!context.Roles.Any())
+        {
+            context.Roles.AddRange(
+                new Role { RoleName = "Student" },
+                new Role { RoleName = "DepartmentOfficer" },
+                new Role { RoleName = "Admin" }
+            );
+        }
+
+        if (!context.Departments.Any())
+        {
+            context.Departments.AddRange(
+                new Department { DepartmentName = "Library", RequiresPayment = false },
+                new Department { DepartmentName = "Finance", RequiresPayment = true },
+                new Department { DepartmentName = "Registration", RequiresPayment = false },
+                new Department { DepartmentName = "Student Affairs", RequiresPayment = false }
+            );
+        }
+
+        context.SaveChanges();
+        logger.LogInformation("Database 'JadaraClearanceDB' ensured and seeded successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while ensuring or seeding the database.");
+    }
+}
 
 app.Run();
