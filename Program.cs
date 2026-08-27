@@ -204,7 +204,90 @@ using (var scope = app.Services.CreateScope())
         }
 
         context.SaveChanges();
-        logger.LogInformation("Database 'JadaraClearanceDB' ensured and seeded successfully.");
+
+        // Seed Default Stakeholder Accounts (Admin, Student, Department Officers)
+        if (!context.Users.Any())
+        {
+            var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+
+            var studentRole = context.Roles.First(r => r.RoleName == "Student");
+            var officerRole = context.Roles.First(r => r.RoleName == "DepartmentOfficer");
+            var adminRole = context.Roles.First(r => r.RoleName == "Admin");
+
+            var libraryDept = context.Departments.First(d => d.DepartmentName == "Library");
+            var financeDept = context.Departments.First(d => d.DepartmentName == "Finance");
+            var regDept = context.Departments.First(d => d.DepartmentName == "Registration");
+            var affairsDept = context.Departments.First(d => d.DepartmentName == "Student Affairs");
+
+            context.Users.AddRange(
+                // Administrator
+                new User
+                {
+                    FullName = "System Administrator",
+                    Email = "admin@jadara.edu",
+                    PasswordHash = passwordHasher.HashPassword("Admin123!"),
+                    RoleId = adminRole.Id,
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+                },
+                // Student
+                new User
+                {
+                    FullName = "Ahmad Student",
+                    Email = "student@jadara.edu",
+                    PasswordHash = passwordHasher.HashPassword("Student123!"),
+                    RoleId = studentRole.Id,
+                    UniversityId = "20241001",
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+                },
+                // Officers
+                new User
+                {
+                    FullName = "Library Officer",
+                    Email = "library@jadara.edu",
+                    PasswordHash = passwordHasher.HashPassword("Officer123!"),
+                    RoleId = officerRole.Id,
+                    DepartmentId = libraryDept.Id,
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+                },
+                new User
+                {
+                    FullName = "Finance Officer",
+                    Email = "finance@jadara.edu",
+                    PasswordHash = passwordHasher.HashPassword("Officer123!"),
+                    RoleId = officerRole.Id,
+                    DepartmentId = financeDept.Id,
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+                },
+                new User
+                {
+                    FullName = "Registration Officer",
+                    Email = "registration@jadara.edu",
+                    PasswordHash = passwordHasher.HashPassword("Officer123!"),
+                    RoleId = officerRole.Id,
+                    DepartmentId = regDept.Id,
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+                },
+                new User
+                {
+                    FullName = "Student Affairs Officer",
+                    Email = "affairs@jadara.edu",
+                    PasswordHash = passwordHasher.HashPassword("Officer123!"),
+                    RoleId = officerRole.Id,
+                    DepartmentId = affairsDept.Id,
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+                }
+            );
+
+            context.SaveChanges();
+        }
+
+        logger.LogInformation("Database 'JadaraClearanceDB' ensured and seeded successfully with default stakeholders.");
     }
     catch (Exception ex)
     {
