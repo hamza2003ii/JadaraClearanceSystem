@@ -206,19 +206,25 @@ using (var scope = app.Services.CreateScope())
         context.SaveChanges();
 
         // Seed Default Stakeholder Accounts (Admin, Student, Department Officers)
+        var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+
+        var studentRole = context.Roles.First(r => r.RoleName == "Student");
+        var officerRole = context.Roles.First(r => r.RoleName == "DepartmentOfficer");
+        var adminRole = context.Roles.First(r => r.RoleName == "Admin");
+
+        var libraryDept = context.Departments.First(d => d.DepartmentName == "Library");
+        var financeDept = context.Departments.First(d => d.DepartmentName == "Finance");
+        var regDept = context.Departments.First(d => d.DepartmentName == "Registration");
+        var affairsDept = context.Departments.First(d => d.DepartmentName == "Student Affairs");
+
+        var existingStudent = context.Users.FirstOrDefault(u => u.Email == "student@jadara.edu");
+        if (existingStudent != null)
+        {
+            existingStudent.FullName = "Hamza Mohammad Sadeq";
+        }
+
         if (!context.Users.Any())
         {
-            var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
-
-            var studentRole = context.Roles.First(r => r.RoleName == "Student");
-            var officerRole = context.Roles.First(r => r.RoleName == "DepartmentOfficer");
-            var adminRole = context.Roles.First(r => r.RoleName == "Admin");
-
-            var libraryDept = context.Departments.First(d => d.DepartmentName == "Library");
-            var financeDept = context.Departments.First(d => d.DepartmentName == "Finance");
-            var regDept = context.Departments.First(d => d.DepartmentName == "Registration");
-            var affairsDept = context.Departments.First(d => d.DepartmentName == "Student Affairs");
-
             context.Users.AddRange(
                 // Administrator
                 new User
@@ -233,7 +239,7 @@ using (var scope = app.Services.CreateScope())
                 // Student
                 new User
                 {
-                    FullName = "Ahmad Student",
+                    FullName = "Hamza Mohammad Sadeq",
                     Email = "student@jadara.edu",
                     PasswordHash = passwordHasher.HashPassword("Student123!"),
                     RoleId = studentRole.Id,
