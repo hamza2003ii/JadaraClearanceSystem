@@ -148,6 +148,10 @@ public class ClearanceService : IClearanceService
 
         if (dto.FineAmount.HasValue)
         {
+            if (dto.FineAmount.Value > 0 && !(approval.Department?.RequiresPayment ?? false))
+            {
+                throw new InvalidOperationException($"Department '{approval.Department?.DepartmentName}' does not collect fees or fines. Fines cannot be applied.");
+            }
             approval.FineAmount = dto.FineAmount.Value;
         }
 

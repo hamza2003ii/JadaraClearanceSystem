@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
             setButtonLoading(submitBtn, true, 'Signing in...');
 
             try {
-                const response = await apiFetch('/auth/login', {
+                // تعديل المسار لـ /Auth/login بالطريقة الصحيحة
+                const response = await apiFetch('/Auth/login', {
                     method: 'POST',
                     body: {
                         email: emailInput.value.trim(),
@@ -123,7 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
             setButtonLoading(submitBtn, true, 'Registering...');
 
             try {
-                const response = await apiFetch('/auth/register', {
+                // تعديل المسار لـ /Auth/register بالطريقة الصحيحة
+                const response = await apiFetch('/Auth/register', {
                     method: 'POST',
                     body: {
                         fullName: fullNameInput.value.trim(),

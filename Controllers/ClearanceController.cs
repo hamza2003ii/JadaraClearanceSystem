@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using JadaraClearance.DTOs;
 using JadaraClearance.DTOs.Clearance;
 using JadaraClearance.Helpers;
@@ -13,6 +14,7 @@ namespace JadaraClearance.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[EnableRateLimiting("GeneralApiRateLimit")]
 [Produces("application/json")]
 public class ClearanceController : ControllerBase
 {

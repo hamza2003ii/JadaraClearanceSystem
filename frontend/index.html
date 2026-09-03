@@ -1,43 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — Jadara Clearance System</title>
+    <title>تسجيل الدخول — نظام براءة الذمة المركزية | جامعة جدارا</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
     <div class="auth-wrapper">
         <div class="auth-card">
-            <div class="auth-header">
-                <h1>Jadara Clearance</h1>
-                <p>Sign in to your account</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                    <div class="brand-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                    </div>
+                    <span style="font-weight: 800; font-size: 1.1rem; color: var(--text-main);">جامعة جدارا</span>
+                </div>
+                <button type="button" class="theme-toggle-btn" onclick="window.toggleTheme()">
+                    <!-- Updated by theme.js -->
+                </button>
             </div>
 
-            <div id="loginAlert" class="alert alert-danger"></div>
+            <div class="auth-header">
+                <h1 class="auth-title">براءة الذمة الإلكترونية</h1>
+                <p class="auth-subtitle">سجّل دخولك للوصول إلى بوابة الطلاب أو الأقسام الإدارية</p>
+            </div>
+
+            <div id="loginAlert" style="display: none; padding: 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.88rem; font-weight: 600;" class="badge-danger"></div>
 
             <form id="loginForm" action="javascript:void(0);" onsubmit="return false;" novalidate>
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="user@jadara.edu" required>
-                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                    <label for="email">البريد الإلكتروني الجامعي</label>
+                    <input type="email" id="email" class="form-control" placeholder="user@jadara.edu" required autocomplete="email" style="direction: ltr; text-align: left;">
+                    <div class="invalid-feedback" style="display: none; color: var(--danger-text); font-size: 0.8rem; margin-top: 0.25rem;">يرجى إدخال بريد إلكتروني صحيح.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
-                    <div class="invalid-feedback">Password is required.</div>
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password" style="direction: ltr; text-align: left;">
+                    <div class="invalid-feedback" style="display: none; color: var(--danger-text); font-size: 0.8rem; margin-top: 0.25rem;">كلمة المرور مطلوبة.</div>
                 </div>
 
-                <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-block">
-                    Sign In
+                <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    تسجيل الدخول
                 </button>
             </form>
 
-            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
-                <span style="color: var(--color-text-muted);">New student?</span>
-                <a href="register.html" style="color: var(--color-primary); font-weight: 600; text-decoration: none; margin-left: 0.25rem;">
-                    Register here
+            <div style="text-align: center; margin-top: 1.75rem; font-size: 0.9rem; border-top: 1px solid var(--glass-border-subtle); padding-top: 1.25rem;">
+                <span style="color: var(--text-muted);">طالب جديد ليس لديك حساب؟</span>
+                <a href="register.html" style="color: var(--primary); font-weight: 700; text-decoration: none; margin-right: 0.35rem;">
+                    إنشاء حساب طالب
                 </a>
             </div>
         </div>

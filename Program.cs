@@ -1,7 +1,9 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -16,17 +18,23 @@ var builder = WebApplication.CreateBuilder(args);
 // -----------------------------------------------------------------------------
 // 1. Database Context Configuration
 // -----------------------------------------------------------------------------
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<JadaraClearanceDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 // -----------------------------------------------------------------------------
-// 2. JWT Bearer Authentication & Authorization Setup
+// 2. Routing Configuration (Lowercase URLs)
+// -----------------------------------------------------------------------------
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+// -----------------------------------------------------------------------------
+// 3. JWT Bearer Authentication & Authorization Setup
 // -----------------------------------------------------------------------------
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["Key"] 
+var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+    ?? jwtSettings["Key"]
     ?? throw new InvalidOperationException("JWT Secret Key is not configured.");
 
 builder.Services.AddAuthentication(options =>
@@ -54,7 +62,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 // -----------------------------------------------------------------------------
-// 3. Dependency Injection (Helpers, Repositories, Services, CORS)
+// 4. Dependency Injection (Helpers, Repositories, Services, CORS)
 // -----------------------------------------------------------------------------
 builder.Services.AddHttpContextAccessor();
 
@@ -67,6 +75,36 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
+});
+
+// Rate Limiting Configuration
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    
+    // Policy for Auth endpoints (login / register) - 15 requests per minute per IP
+    options.AddPolicy("AuthRateLimit", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown_client",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 15,
+                Window = TimeSpan.FromMinutes(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0
+            }));
+
+    // General API rate limit - 60 requests per minute
+    options.AddPolicy("GeneralApiRateLimit", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown_client",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 60,
+                Window = TimeSpan.FromMinutes(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 2
+            }));
 });
 
 // Helpers
@@ -90,7 +128,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // -----------------------------------------------------------------------------
-// 4. Swagger Setup with JWT Support & XML Documentation
+// 5. Swagger Setup with JWT Support & XML Documentation
 // -----------------------------------------------------------------------------
 builder.Services.AddSwaggerGen(options =>
 {
@@ -139,14 +177,20 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // -----------------------------------------------------------------------------
-// 5. HTTP Request Pipeline & Middleware Setup
+// 6. HTTP Request Pipeline & Middleware Setup
 // -----------------------------------------------------------------------------
+
+// Security Headers Middleware (OWASP compliance)
+app.UseMiddleware<SecurityHeadersMiddleware>();
 
 // Global Exception Handler Middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Enable CORS
 app.UseCors("AllowAll");
+
+// Enable Rate Limiting
+app.UseRateLimiter();
 
 // Serve Frontend Static Files
 var frontendPath = Path.Combine(builder.Environment.ContentRootPath, "frontend");
@@ -174,6 +218,9 @@ app.UseSwaggerUI(c =>
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// التعديل الجوهري: ربط الـ Controllers للتعرف على الـ Routes
+app.MapControllers();
 
 // Initialize Database and Seed Default Roles/Departments
 using (var scope = app.Services.CreateScope())

@@ -1,107 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Officer Dashboard — Jadara Clearance System</title>
+    <title>لوحة ضابط القسم — نظام براءة الذمة | جامعة جدارا</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
     <!-- Navbar -->
     <header class="navbar">
         <a href="officer-dashboard.html" class="navbar-brand">
-            🏛️ Jadara Clearance System
-        </a>
-        <div class="navbar-user">
-            <div class="user-info">
-                <div id="userName" class="user-name">Loading...</div>
-                <div id="userRole" class="user-role">Department Officer</div>
+            <div class="brand-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
             </div>
-            <button id="logoutBtn" class="btn btn-outline btn-sm">Logout</button>
+            <span>بوابة موظفي الأقسام — براءة الذمة</span>
+        </a>
+        
+        <div class="user-info-bar">
+            <button type="button" class="theme-toggle-btn" onclick="window.toggleTheme()">
+                <!-- Populated by theme.js -->
+            </button>
+            <div class="user-details">
+                <span class="user-name" id="userName">جاري التحميل...</span>
+                <span class="user-role" id="userRole">ضابط اعتماد القسم</span>
+            </div>
+            <button id="logoutBtn" class="btn btn-outline" style="padding: 0.45rem 0.9rem; font-size: 0.85rem;">
+                تسجيل الخروج
+            </button>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <main style="max-width: 1150px; margin: 2rem auto; padding: 0 1.5rem; flex: 1; width: 100%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
             <div>
-                <h1 style="font-size: 1.5rem; font-weight: 700;">Department Pending Requests</h1>
-                <p style="color: var(--color-text-muted); font-size: 0.9rem;">Review and process student clearance approvals</p>
+                <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.35rem;">
+                    طلبات براءة الذمة المعلقة للقسم
+                </h1>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">
+                    تدقيق سجلات الطلبة، اعتماد براءة الذمة، أو تحديد أسباب الرفض والغرامات المستحقة
+                </p>
             </div>
-            <button id="refreshBtn" class="btn btn-outline btn-sm">
-                🔄 Refresh Pending List
+            <button id="refreshBtn" class="btn btn-outline">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                </svg>
+                تحديث قائمة الطلبات
             </button>
         </div>
 
         <div class="card">
-            <div class="table-responsive">
-                <table class="table">
+            <div class="table-wrapper">
+                <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Student Name</th>
-                            <th>University ID</th>
-                            <th>Reference</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>اسم الطالب</th>
+                            <th>الرقم الجامعي</th>
+                            <th>رقم المعاملة</th>
+                            <th>حالة الاعتماد</th>
+                            <th>الإجراء والقرار</th>
                         </tr>
                     </thead>
                     <tbody id="pendingTableBody">
-                        <!-- Populated by JS -->
+                        <!-- Populated dynamically by officer.js -->
                     </tbody>
                 </table>
             </div>
 
-            <div id="emptyState" style="display: none; text-align: center; padding: 3rem 1rem;">
-                <h3 style="color: var(--color-text-muted); font-size: 1.1rem; font-weight: 500;">No Pending Clearance Approvals</h3>
-                <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: 0.25rem;">All student requests for your department have been processed.</p>
+            <div id="emptyState" style="display: none; text-align: center; padding: 3.5rem 1rem;">
+                <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--success-bg); color: var(--success-text); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">
+                    ✓
+                </div>
+                <h3 style="color: var(--text-main); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.35rem;">
+                    لا توجد طلبات معلقة حالياً
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    تمت معالجة واعتماد جميع طلبات الطلبة الواردة لقسمكم بنجاح.
+                </p>
             </div>
         </div>
     </main>
 
-    <!-- Review Modal -->
+    <!-- Modern Glassmorphic Review Modal -->
     <div id="reviewModal" class="modal-backdrop">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Review Student Request</h3>
-                <button id="modalCloseBtn" class="modal-close">&times;</button>
+        <div class="modal">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--glass-border-subtle); padding-bottom: 0.75rem;">
+                <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">
+                    اتخاذ القرار بطلب براءة الذمة
+                </h3>
+                <button id="modalCloseBtn" style="background: none; border: none; font-size: 1.5rem; color: var(--text-subtle); cursor: pointer;">&times;</button>
             </div>
 
-            <div id="modalAlert" class="alert alert-danger"></div>
+            <div id="modalAlert" style="display: none; padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.85rem; font-weight: 600;" class="badge-danger"></div>
 
-            <div style="margin-bottom: 1.25rem; background: var(--color-bg); padding: 0.75rem 1rem; border-radius: var(--radius-sm);">
-                <div style="font-size: 0.85rem; color: var(--color-text-muted);">Student Details</div>
-                <div id="modalStudentName" style="font-weight: 700; font-size: 1rem; color: var(--color-primary);"></div>
-                <div style="font-size: 0.85rem; color: var(--color-text-muted);">
-                    University ID: <span id="modalUniversityId" style="font-weight: 600; color: var(--color-text-main);"></span>
+            <div style="margin-bottom: 1.25rem; background: var(--primary-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--glass-border-subtle);">
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">بيانات الطالب صاحب الطلب</div>
+                <div id="modalStudentName" style="font-weight: 800; font-size: 1.05rem; color: var(--primary);"></div>
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+                    الرقم الجامعي: <span id="modalUniversityId" style="font-weight: 700; color: var(--text-main); direction: ltr; display: inline-block;"></span>
                 </div>
             </div>
 
-            <form id="reviewForm">
+            <form id="reviewForm" action="javascript:void(0);" onsubmit="return false;">
                 <div class="form-group">
-                    <label for="statusSelect">Decision</label>
+                    <label for="statusSelect">القرار الإداري</label>
                     <select id="statusSelect" class="form-control">
-                        <option value="Approved">Approve Clearance</option>
-                        <option value="Rejected">Reject Clearance</option>
+                        <option value="Approved">اعتماد براءة الذمة (موافق)</option>
+                        <option value="Rejected">رفض الطلب (توجد التزامات أو متعلقات)</option>
                     </select>
                 </div>
 
                 <div id="rejectionReasonGroup" class="form-group" style="display: none;">
-                    <label for="rejectionReason">Rejection Reason <span style="color: var(--color-danger);">*</span></label>
-                    <textarea id="rejectionReason" class="form-control" rows="3" placeholder="Explain why the clearance request was rejected..."></textarea>
+                    <label for="rejectionReason">سبب الرفض والبيان التوضيحي <span style="color: var(--danger-text);">*</span></label>
+                    <textarea id="rejectionReason" class="form-control" rows="3" placeholder="وضّح سبب الرفض للطالب (مثال: كتب مستعارة لم تُعاد، رسوم دراسية متبقية)..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="fineAmount">Fine / Fee Amount ($) <small style="color: var(--color-text-muted);">(Optional)</small></label>
-                    <input type="number" id="fineAmount" class="form-control" min="0" step="0.01" placeholder="0.00">
+                    <label for="fineAmount">قيمة الرسوم أو الغرامة إن وجدت (د.أ) <small style="color: var(--text-muted);">(للأقسام المالية والمحاسبة فقط)</small></label>
+                    <input type="number" id="fineAmount" class="form-control" min="0" step="0.01" placeholder="0.00" style="direction: ltr; text-align: left;">
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" id="modalCancelBtn" class="btn btn-outline">Cancel</button>
-                    <button type="submit" id="modalSubmitBtn" class="btn btn-primary">Submit Decision</button>
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                    <button type="button" id="modalCancelBtn" class="btn btn-outline">إلغاء</button>
+                    <button type="submit" id="modalSubmitBtn" class="btn btn-primary">حفظ واعتماد القرار</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Animated Status Matrix Bar -->
+    <footer class="animated-matrix-bar">
+        <div class="dot-matrix-container">
+            <span class="engine-status-text">نظام اعتماد الأقسام متصل وآمن</span>
+            <div class="matrix-dot"></div>
+            <div class="matrix-dot"></div>
+            <div class="matrix-dot"></div>
+            <div class="matrix-dot"></div>
+        </div>
+        <div style="font-size: 0.78rem; color: var(--text-subtle);">
+            جامعة جدارا © 2026 — نظام براءة الذمة المركزية
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="js/config.js"></script>

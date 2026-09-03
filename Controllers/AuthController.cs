@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using JadaraClearance.DTOs;
 using JadaraClearance.DTOs.Auth;
 using JadaraClearance.Services;
@@ -10,6 +11,7 @@ namespace JadaraClearance.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("AuthRateLimit")]
 [Produces("application/json")]
 public class AuthController : ControllerBase
 {
