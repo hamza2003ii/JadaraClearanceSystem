@@ -93,6 +93,72 @@
             </div>
         </div>
 
+        <!-- Official Digital Certificate Modal -->
+        <div id="certificateModal" class="modal-backdrop">
+            <div class="modal" style="max-width: 720px; width: 95%;">
+                <div class="certificate-frame">
+                    <div class="certificate-header">
+                        <div style="text-align: right;">
+                            <div style="font-weight: 800; font-size: 1.25rem; color: #1e3a8a;">المملكة الأردنية الهاشمية</div>
+                            <div style="font-weight: 700; font-size: 1.1rem; color: #1e40af;">جامعة جدارا — عمادة القبول والتسجيل</div>
+                            <div style="font-size: 0.85rem; color: #64748b;">نظام براءة الذمة والخدمات المركزية الموحد</div>
+                        </div>
+                        <div class="certificate-seal">✓</div>
+                        <div style="text-align: left; direction: ltr;">
+                            <div style="font-weight: 800; font-size: 1.1rem; color: #1e3a8a;">Jadara University</div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Official Clearance Certificate</div>
+                        </div>
+                    </div>
+
+                    <h2 style="font-size: 1.8rem; font-weight: 900; color: #1e3a8a; margin-bottom: 0.5rem;">
+                        شهادة براءة ذمة إلكترونية رسمية
+                    </h2>
+                    <p style="font-size: 0.95rem; color: #475569; margin-bottom: 2rem;">
+                        تشهد جامعة جدارا بأن الطالب المذكورة بياناته أدناه قد أتم بنجاح كافة متطلبات براءة الذمة لدى جميع الدوائر والأقسام المعنية:
+                    </p>
+
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.75rem; text-align: right;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <span style="color: #64748b; font-size: 0.85rem;">اسم الطالب:</span>
+                                <div style="font-weight: 800; font-size: 1.1rem; color: #0f172a;" id="certStudentName">--</div>
+                            </div>
+                            <div>
+                                <span style="color: #64748b; font-size: 0.85rem;">الرقم الجامعي:</span>
+                                <div style="font-weight: 800; font-size: 1.1rem; color: #1e40af; direction: ltr; text-align: right;" id="certStudentId">--</div>
+                            </div>
+                            <div>
+                                <span style="color: #64748b; font-size: 0.85rem;">تاريخ الاعتماد النهائي:</span>
+                                <div style="font-weight: 700; font-size: 0.95rem; color: #0f172a;" id="certCompletionDate">--</div>
+                            </div>
+                            <div>
+                                <span style="color: #64748b; font-size: 0.85rem;">رقم المعاملة:</span>
+                                <div style="font-weight: 700; font-size: 0.95rem; color: #0f172a;" id="certRequestId">--</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px dashed #cbd5e1; padding-top: 1.25rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.35rem;">
+                            رمز التحقق المشفر والختم الرقمي (Cryptographic SHA-256 Digital Seal):
+                        </div>
+                        <div style="font-family: monospace; font-size: 0.78rem; background: #e2e8f0; padding: 0.5rem; border-radius: 4px; direction: ltr; word-break: break-all; color: #0f172a;" id="certHashVal">
+                            --
+                        </div>
+                    </div>
+
+                    <div class="no-print" style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" class="btn btn-primary" onclick="window.print()">
+                            🖨️ طباعة الشهادة / حفظ كـ PDF
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="closeCertificateModal()">
+                            إغلاق
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Animated Status Matrix Bar -->

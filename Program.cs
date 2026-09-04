@@ -219,8 +219,15 @@ app.UseSwaggerUI(c =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-// التعديل الجوهري: ربط الـ Controllers للتعرف على الـ Routes
+// Map API Controllers & Health Check Endpoint
 app.MapControllers();
+app.MapGet("/health", () => Results.Ok(new 
+{ 
+    status = "Healthy", 
+    system = "Jadara Clearance & Service Management Platform",
+    environment = app.Environment.EnvironmentName,
+    timestamp = DateTime.UtcNow 
+}));
 
 // Initialize Database and Seed Default Roles/Departments
 using (var scope = app.Services.CreateScope())

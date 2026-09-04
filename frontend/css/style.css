@@ -792,3 +792,71 @@ table.data-table tbody tr:hover td {
         align-items: center;
     }
 }
+
+/* 18. PRINTABLE CERTIFICATE & MODAL SYSTEM */
+.certificate-frame {
+    background: #ffffff;
+    border: 8px double #1e3a8a;
+    border-radius: var(--radius-md);
+    padding: 2.5rem;
+    color: #0f172a;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+}
+
+.certificate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.certificate-seal {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.35rem;
+    box-shadow: 0 4px 15px rgba(217, 119, 6, 0.35);
+}
+
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+    #certificateModal, #certificateModal * {
+        visibility: visible !important;
+    }
+    #certificateModal {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #ffffff !important;
+        display: flex !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        backdrop-filter: none !important;
+        z-index: 999999 !important;
+    }
+    #certificateModal .modal {
+        max-width: 100% !important;
+        width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 1.5cm !important;
+        background: #ffffff !important;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
